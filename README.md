@@ -5,7 +5,7 @@
 
 ## Setup
 
-1. We will be using [uv](https://docs.astral.sh/uv/) as the package manager for this project and [duckdb](https://duckdb.org/) as our data wrangling tool. Ensure you have both installed by running one of the following:
+1. We will be using [uv](https://docs.astral.sh/uv/) as the package manager for this project and [duckdb](https://duckdb.org/) as our data wrangling tool. Ensure you have both installed by running the following:
 ```
 curl -LsSf https://astral.sh/uv/install.sh | sh
 curl https://install.duckdb.org | bash
