@@ -1,0 +1,45 @@
+metro_id,cbsa_title,county_name,state,county_geoid
+HOU,"Houston-Pasadena-The Woodlands, TX",Harris,TX,48201
+HOU,"Houston-Pasadena-The Woodlands, TX",Montgomery,TX,48339
+HOU,"Houston-Pasadena-The Woodlands, TX",Fort Bend,TX,48157
+HOU,"Houston-Pasadena-The Woodlands, TX",Galveston,TX,48167
+HOU,"Houston-Pasadena-The Woodlands, TX",Brazoria,TX,48039
+HOU,"Houston-Pasadena-The Woodlands, TX",Liberty,TX,48291
+HOU,"Houston-Pasadena-The Woodlands, TX",Waller,TX,48473
+HOU,"Houston-Pasadena-The Woodlands, TX",San Jacinto,TX,48407
+HOU,"Houston-Pasadena-The Woodlands, TX",Austin,TX,48015
+HOU,"Houston-Pasadena-The Woodlands, TX",Chambers,TX,48071
+DFW,"Dallas-Fort Worth-Arlington, TX",Dallas,TX,48113
+DFW,"Dallas-Fort Worth-Arlington, TX",Tarrant,TX,48439
+DFW,"Dallas-Fort Worth-Arlington, TX",Collin,TX,48085
+DFW,"Dallas-Fort Worth-Arlington, TX",Denton,TX,48121
+DFW,"Dallas-Fort Worth-Arlington, TX",Johnson,TX,48251
+DFW,"Dallas-Fort Worth-Arlington, TX",Ellis,TX,48139
+DFW,"Dallas-Fort Worth-Arlington, TX",Parker,TX,48367
+DFW,"Dallas-Fort Worth-Arlington, TX",Rockwall,TX,48397
+DFW,"Dallas-Fort Worth-Arlington, TX",Kaufman,TX,48257
+DFW,"Dallas-Fort Worth-Arlington, TX",Hunt,TX,48231
+DFW,"Dallas-Fort Worth-Arlington, TX",Wise,TX,48497
+MFL,"Miami-Fort Lauderdale-West Palm Beach, FL",Miami-Dade,FL,12086
+MFL,"Miami-Fort Lauderdale-West Palm Beach, FL",Broward,FL,12011
+MFL,"Miami-Fort Lauderdale-West Palm Beach, FL",Palm Beach,FL,12099
+AUS,"Austin-Round Rock-San Marcos, TX",Travis,TX,48453
+AUS,"Austin-Round Rock-San Marcos, TX",Williamson,TX,48491
+AUS,"Austin-Round Rock-San Marcos, TX",Hays,TX,48209
+AUS,"Austin-Round Rock-San Marcos, TX",Bastrop,TX,48021
+AUS,"Austin-Round Rock-San Marcos, TX",Caldwell,TX,48055
+SAN,"San Antonio-New Braunfels, TX",Bexar,TX,48029
+SAN,"San Antonio-New Braunfels, TX",Guadalupe,TX,48187
+SAN,"San Antonio-New Braunfels, TX",Comal,TX,48091
+SAN,"San Antonio-New Braunfels, TX",Atascosa,TX,48013
+SAN,"San Antonio-New Braunfels, TX",Wilson,TX,48493
+SAN,"San Antonio-New Braunfels, TX",Medina,TX,48325
+SAN,"San Antonio-New Braunfels, TX",Kendall,TX,48259
+SAN,"San Antonio-New Braunfels, TX",Bandera,TX,48019
+NOL,"New Orleans-Metairie, LA",Orleans,LA,22071
+NOL,"New Orleans-Metairie, LA",Jefferson,LA,22051
+NOL,"New Orleans-Metairie, LA",St. Bernard,LA,22087
+NOL,"New Orleans-Metairie, LA",St. Charles,LA,22089
+NOL,"New Orleans-Metairie, LA",St. John the Baptist,LA,22095
+NOL,"New Orleans-Metairie, LA",Plaquemines,LA,22075
+NOL,"New Orleans-Metairie, LA",St. James,LA,22093
