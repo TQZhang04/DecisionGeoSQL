@@ -6,7 +6,7 @@
 -- 1. Set data_dir to the directory with FloodSQL data
 -- 2. Run with one of the following options:
 --   a. Run `duckdb < DGQSL.sql` to create wk1 deliverables.
---      Files will be saved to data_dir/outputs.
+--      Files will be saved to ../outputs.
 --   b. Run `duckdb -init DGSQL.sql` to start an interactive session
 --   c. Run `duckdb < DGSQL.sql database.ddb` to save a persistent database
 -- ** Other Info **
@@ -77,7 +77,7 @@ CREATE OR REPLACE TABLE schools AS
     SELECT * FROM read_parquet(getvariable('data_dir') || 'schools_tx_fl_la.parquet');
 
 CREATE OR REPLACE TABLE six_metro AS
-    SELECT * FROM read_csv(getvariable('data_dir') || 'six_metro_counties.csv');
+    SELECT * FROM read_csv('../six_metro_counties.csv');
 
 ALTER TABLE six_metro
     ALTER COLUMN county_geoid TYPE VARCHAR;
