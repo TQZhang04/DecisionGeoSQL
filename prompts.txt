@@ -1,0 +1,18 @@
+#P1
+1::Which census tracts in <METRO_AREA> should receive closer flood-mitigation attention based on the spatial extent of riverine flood exposure?|Which census tracts in <METRO_AREA> should receive closer flood-mitigation attention based on the spatial extent of riverine flood exposure PARAPHRASE?
+
+#P2
+1::Which census tracts in <METRO_AREA> should receive greater flood-mitigation priority if the main objective is to protect the largest number of people exposed to flooding?|Which census tracts in <METRO_AREA> should receive greater flood-mitigation priority if the main objective is to protect the largest number of people exposed to flooding PARAPHRASE?
+
+#P3
+1::Which census tracts in <METRO_AREA> should receive greater flood-mitigation attention if the goal is to protect exposed populations in communities that may face greater difficulty preparing for and recovering from disasters?|Which census tracts in <METRO_AREA> should receive greater flood-mitigation attention if the goal is to protect exposed populations in communities that may face greater difficulty preparing for and recovering from disasters PARAPHRASE?
+
+#P4
+1::Which census tracts in <METRO_AREA> should receive greater mitigation priority if the objective is to reduce expected flood-related property and economic losses?|Which census tracts in <METRO_AREA> should receive greater mitigation priority if the objective is to reduce expected flood-related property and economic losses PARAPHRASE?
+
+#P5
+1::Which census tracts in <METRO_AREA> should receive greater flood-mitigation priority where higher flood exposure coincides with a greater concentration of hospitals and schools?|Which census tracts in <METRO_AREA> should receive greater flood-mitigation priority where higher flood exposure coincides with a greater concentration of hospitals and schools PARAPHRASE?
+
+#P6
+1::Which census tracts in <METRO_AREA> should receive the highest overall flood-mitigation priority when considering impacts on people, communities, economic assets, and community services?|Which census tracts in <METRO_AREA> should receive the highest overall flood-mitigation priority when considering impacts on people, communities, economic assets, and community services PARAPHRASE?
+
