@@ -1080,6 +1080,9 @@ ADD COLUMN benchmark VARCHAR;
 UPDATE benchmark_ranks
 SET benchmark = CONCAT(metro_id, '_', policy);
 
+COPY benchmark_ranks
+TO '../outputs/benchmark.parquet' (FORMAT parquet);
+
 ---- Set up dev and held-out test sets
 
 ALTER TABLE benchmark_ranks
