@@ -69,10 +69,11 @@ def main():
     # Read in benchmark data
     benchmark = pd.read_parquet(benchmark_data_path)
     
-    # Write data
-    with open(prompt_path, 'r') as prompt_file:
+    # Read prompts
+    with open(prompt_path, 'r', encoding='utf-8') as prompt_file:
         prompts = prompt_file.readlines()
         
+    # Write data out
     with open(out_path, 'w', encoding='utf-8') as out:
         policy = 'P1'
         for prompt in prompts:

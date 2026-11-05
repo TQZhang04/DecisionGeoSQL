@@ -1075,10 +1075,10 @@ CREATE OR REPLACE TABLE benchmark_ranks
 AS SELECT * FROM policy_ranks;
 
 ALTER TABLE benchmark_ranks
-ADD COLUMN benchmark VARCHAR;
+ADD COLUMN episode VARCHAR;
 
 UPDATE benchmark_ranks
-SET benchmark = CONCAT(metro_id, '_', policy);
+SET episode = CONCAT(metro_id, '_', policy);
 
 COPY benchmark_ranks
 TO '../outputs/benchmark.parquet' (FORMAT parquet);
