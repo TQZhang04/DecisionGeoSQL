@@ -8,25 +8,6 @@ import json
 import argparse
 import duckdb
 
-{
-  'episode_id': 'HOU_P3',
-  'metro_id': 'HOU',
-  'cbsa_title': 'Houston-Pasadena-The Woodlands',
-  'policy_id': 'P3',
-  'canonical_prompt': '...',
-  'paraphrase_prompt': '...',
-  'candidate_unit': 'census_tract',
-  'gold_evidence': ['E', 'V'],
-  'eligible_geoids': ['...'],
-  'gold_score_by_geoid': {
-    '48157670101': 0.82
-  },
-  'gold_ranking': ['...'],
-  'benchmark_version': '1.0',
-  'data_version': '...'
-}
-
-
 # Constants
 
 # - Filepaths
