@@ -23,7 +23,12 @@ git submodule update --init
 ```
 python FloodSQL-Bench/download_hf.py
 ```
-5. You should be set up to run the SQL script with duckdb. This will start an interactive session as well as populate `outputs` with the week 1 deliverables.
+5. You should be set up to run the SQL script with duckdb. This will start an interactive session as well as populate `outputs` with the necessary files for benchmark creation.
 ```
 duckdb -init scripts/DGSQL.sql
+```
+6. Once the SQL script has completed, you can run the benchmark generation script to save the benchmark into a .jsonl file in `benchmark`.
+Update filepaths/constants in the script as needed.
+```
+python scripts/create_benchmark.py
 ```
