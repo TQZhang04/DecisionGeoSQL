@@ -83,12 +83,16 @@ def main():
                 policy = prompt[1:]
                 continue
             
-            prompt, paraphrase_prompt = prompt.split('::')[-1].split('|')
+            idx, level, prompts = prompt.split('::')
+            # prompt, paraphrase_prompt = prompts.split('|')
+            prompt = prompts
+            paraphrase_prompt = "PLACEHOLDER"
             for metro_id in metro_ids.index:
                 episode_id = f'{metro_id}_{policy}'
+                # print(metro_ids)
                 cbsa_title = metro_ids.loc[metro_id, 'cbsa_title']
-                prompt = prompt.replace('<METRO_AREA>', f'the {cbsa_title} area')
-                paraphrase_prompt = paraphrase_prompt.replace('<METRO_AREA>', f'the {cbsa_title} area')
+                final_prompt = prompt.replace('<METRO_AREA>', f'the {cbsa_title} area')
+                final_paraphrase_prompt = paraphrase_prompt.replace('<METRO_AREA>', f'the {cbsa_title} area')
                 policy_scores = get_scores(benchmark, episode_id)
                 
                 episode = {
@@ -96,8 +100,9 @@ def main():
                     'metro_id': metro_id,
                     'cbsa_title': cbsa_title,
                     'policy_id': policy,
-                    'canonical_prompt': prompt,
-                    'paraphrase_prompt': paraphrase_prompt,
+                    'canonical_prompt':final_prompt,
+                    'paraphrase_prompt': final_paraphrase_prompt,
+                    'level': level,
                     'candidate_unit': 'census_tract',
                     'gold_evidence': policy_evidence_map[policy],
                     'eligible_geoids': list(policy_scores.index),
