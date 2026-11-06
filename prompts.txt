@@ -1,9 +1,9 @@
 #P1
-0::L2::Where in <METRO_AREA> should flood maps be updated first?
-1::L1::Which census tracts in <METRO_AREA> should we send field reconnaissance teams to first, based on how much of each tract’s area could be covered by riverine flooding?
-2::L1::Which census tracts in <METRO_AREA> should be screened first for flood-compatible land-use review because so much of their land lies in the riverine flood hazard zone?
-3::L0::Which census tracts in <METRO_AREA> should be prioritized because they have the broadest riverine flood footprint?
-4::L0::Which census tracts in <METRO_AREA> should be prioritized based on how much of the tract the river could inundate?
+0::L2::Which census tracts in <METRO_AREA> should flood maps be updated first?|Which census tracts in <METRO_AREA> should be prioritized for updates to flood maps?
+1::L1::Which census tracts in <METRO_AREA> should we send field reconnaissance teams to first, based on how much of each tract’s area could be covered by riverine flooding?|To which census tracts in <METRO_AREA> should field reconnaissance teams be dispatched if we want to prioritize based on how much of each tract’s area could be covered by riverine flooding?
+2::L1::Which census tracts in <METRO_AREA> should be screened first for flood-compatible land-use review because so much of their land lies in the riverine flood hazard zone?|I work in <METRO_AREA>. Which census tracts should I screen for flood-compatible land-use review because so much of their land lies in the riverine flood hazard zone?
+3::L0::Which census tracts in <METRO_AREA> should be prioritized because they have the broadest riverine flood footprint?|Looking at riverine flood footprint for census tracts in <METRO_AREA>, which ones are the most at risk?
+4::L0::Which census tracts in <METRO_AREA> should be prioritized based on how much of the tract the river could inundate?|For <METRO_AREA>, if we were prioritizing based on how much of the tract the river could inundate, which census tracts would be highest priority?
 
 #P2
 0::L2::Which census tracts in <METRO_AREA> should be prioritized for planning points of distribution for water and supplies?

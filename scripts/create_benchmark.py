@@ -66,9 +66,7 @@ def main():
                 continue
             
             idx, level, prompts = prompt.split('::')
-            # prompt, paraphrase_prompt = prompts.split('|')
-            prompt = prompts
-            paraphrase_prompt = "PLACEHOLDER"
+            prompt, paraphrase_prompt = prompts.split('|')
             for metro_id in metro_ids.index:
                 episode_id = f'{metro_id}_{policy}'
                 # print(metro_ids)
