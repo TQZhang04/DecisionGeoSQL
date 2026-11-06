@@ -76,6 +76,7 @@ def main():
                 policy_scores = get_scores(benchmark, episode_id)
                 
                 episode = {
+                    'prompt_id': f'{episode_id}_{idx}',
                     'episode_id': episode_id,
                     'metro_id': metro_id,
                     'cbsa_title': cbsa_title,
