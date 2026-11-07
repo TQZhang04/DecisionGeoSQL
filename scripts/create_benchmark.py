@@ -66,7 +66,11 @@ def main():
                 continue
             
             idx, level, prompts = prompt.split('::')
-            prompt, paraphrase_prompt = prompts.split('|')
+            try:
+                prompt, paraphrase_prompt = prompts.split('|')
+            except:
+                prompt = prompts
+                paraphrase_prompt = "PLACEHOLDER"
             for metro_id in metro_ids.index:
                 episode_id = f'{metro_id}_{policy}'
                 # print(metro_ids)
@@ -76,11 +80,12 @@ def main():
                 policy_scores = get_scores(benchmark, episode_id)
                 
                 episode = {
-                    'prompt_id': f'{episode_id}_{idx}',
+                    'item_id': f'{episode_id}_{idx}',
                     'episode_id': episode_id,
                     'metro_id': metro_id,
                     'cbsa_title': cbsa_title,
                     'policy_id': policy,
+                    'prompt_id': idx,
                     'canonical_prompt':final_prompt,
                     'paraphrase_prompt': final_paraphrase_prompt,
                     'level': level,
