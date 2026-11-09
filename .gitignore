@@ -9,6 +9,9 @@ wheels/
 # environment file
 .env
 
+# input data
+data/*
+
 # Virtual environments
 .venv
 
