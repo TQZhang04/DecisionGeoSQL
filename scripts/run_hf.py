@@ -389,11 +389,20 @@ def build_metadata_prompt(meta, chosen_tables, chosen_columns):
 # =========================================================
 
 def generate_sql_rag_embed():
+    
+    print("="*20)
+    print("===Running DecisionGeoSQL-Bench SQL generation script===")
+    print("Using device: %s" % DEVICE)
+    print("="*20)
+    print()
+    
+    print("Loading metadata...")
     meta = load_metadata(METADATA_PATH)
     # 1) indexing + one-time embedding of tables/columns
     table_index = build_table_index(meta)
     col_index = build_column_index(meta)
 
+    print("Loading embedding model...")
     embedder = Embedder(
         EMBED_MODEL,
         pooling=args.pooling,
@@ -401,8 +410,10 @@ def generate_sql_rag_embed():
         batch_size=args.embed_batch_size,
         trust_remote_code=args.trust_remote_code,
     )
+    print("Embedding tables and columns for RAG...")
     table_names, table_embs, col_embs = embed_indices(embedder, table_index, col_index)
 
+    print("Loading agent...")
     generator = SQLGenerator(
         MODEL_NAME,
         max_new_tokens=args.max_new_tokens,
@@ -413,6 +424,7 @@ def generate_sql_rag_embed():
     fout = open(OUTPUT_JSONL, "w", encoding="utf-8")
 
     # 2) load merged benchmark
+    print("Loading benchmark...")
     benchmark_episodes = []
     with open(INPUT_JSON, "r", encoding="utf-8") as f:
         for line in f:
@@ -421,7 +433,9 @@ def generate_sql_rag_embed():
         benchmark_episodes = benchmark_episodes[:args.limit]
 
     # 3) iterate over all prompts
-    for item in benchmark_episodes:
+    print("Iterating over benchmark prompts...")
+    for i, item in enumerate(benchmark_episodes):
+        n_prompts = len(benchmark_episodes)
         for para in ["canonical_prompt", "paraphrase_prompt"]:
             pid = item["item_id"] + ("_og" if para == "canonical_prompt" else "_pp")
             prompt = item[para]
@@ -431,7 +445,8 @@ def generate_sql_rag_embed():
             
             level = item["level"]
 
-            print(f"\n[{pid}] Processing question:\n{prompt}")
+            print("\n[%s] Processing question %d of %d:\n%s" 
+                  % (pid, i, n_prompts, prompt))
 
             # STEP 0: embed the question once
             q_emb = embedder.encode(args.query_prefix + prompt)[0]
@@ -448,9 +463,8 @@ def generate_sql_rag_embed():
             # Many chat templates only allow a single system message, so merge them
             system_text = SYSTEM_PROMPT.strip() + "\n\n" + metadata_prompt
             user_prompt = f"""Question:
-{prompt}
-
-Return only a single valid DuckDB SQL query."""
+                {prompt}
+            Return only a single valid DuckDB SQL query."""
 
             # STEP 4: LLM
             try:
