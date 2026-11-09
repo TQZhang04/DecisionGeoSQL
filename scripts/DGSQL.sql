@@ -6,7 +6,7 @@
 -- 1. Set data_dir to the directory with FloodSQL data
 -- 2. Run with one of the following options:
 --   a. Run `duckdb < DGQSL.sql` to create wk1 deliverables.
---      Files will be saved to ../outputs.
+--      Files will be saved to outputs.
 --   b. Run `duckdb -init DGSQL.sql` to start an interactive session
 --   c. Run `duckdb < DGSQL.sql database.ddb` to save a persistent database
 -- ** Other Info **
@@ -15,7 +15,7 @@
 -- =========================
 
 -- Constants
-SET VARIABLE data_dir = '../FloodSQL-Bench/data/data/';
+SET VARIABLE data_dir = 'data/data/';
 
 -- Load spatial library
 INSTALL spatial;
@@ -77,7 +77,7 @@ CREATE OR REPLACE TABLE schools AS
     SELECT * FROM read_parquet(getvariable('data_dir') || 'schools_tx_fl_la.parquet');
 
 CREATE OR REPLACE TABLE six_metro AS
-    SELECT * FROM read_csv('../six_metro_counties.csv');
+    SELECT * FROM read_csv('six_metro_counties.csv');
 
 ALTER TABLE six_metro
     ALTER COLUMN county_geoid TYPE VARCHAR;
@@ -350,7 +350,7 @@ UPDATE tract_level
     WHERE ct.GEOID = tract_level.GEOID;
 
 COPY tract_level
-TO ('../outputs/tract_evidence.parquet') (FORMAT parquet);
+TO ('outputs/tract_evidence.parquet') (FORMAT parquet);
 
 -- Save county profiles
 
@@ -412,7 +412,7 @@ COPY
     FROM tract_level
     GROUP BY metro_id
     )
-TO ('../outputs/metro_profile.csv') (FORMAT csv);
+TO ('outputs/metro_profile.csv') (FORMAT csv);
 
 --- Extra county summary view for analysis
 
@@ -738,7 +738,7 @@ LEFT JOIN kendall_tau k
    AND p.policy_b = k.policy_b;
 
 COPY policy_separability
-TO ('../outputs/policy_separability.parquet') (FORMAT parquet);
+TO ('outputs/policy_separability.parquet') (FORMAT parquet);
 
 -- LEAVE ONE OUT EXPERIMENTS --
 
@@ -1065,7 +1065,7 @@ LEFT JOIN rank_regrets_loo r
    AND p.policy_loo = r.policy_loo;
 
 COPY policy_separability_loo
-TO ('../outputs/policy_separability_loo.parquet') (FORMAT parquet);
+TO ('outputs/policy_separability_loo.parquet') (FORMAT parquet);
 
 --- FUNDAMENTAL BENCHMARKS --
 
@@ -1081,7 +1081,7 @@ UPDATE benchmark_ranks
 SET episode = CONCAT(metro_id, '_', policy);
 
 COPY benchmark_ranks
-TO '../outputs/benchmark.parquet' (FORMAT parquet);
+TO 'outputs/benchmark.parquet' (FORMAT parquet);
 
 ---- Set up dev and held-out test sets
 
