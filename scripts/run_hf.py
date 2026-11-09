@@ -73,7 +73,7 @@ TORCH_DTYPE = "auto" if args.dtype == "auto" else getattr(torch, args.dtype)
 SYSTEM_PROMPT = """
 You are an expert DuckDB SQL generator for the FloodSQL_Bench dataset.
 You are aiding a disaster responder who is trying to prioritize the distribution of limited resources to areas that need them most.
-Your task is to generate a query that will produce a priority ranking of census tracts be GEOID based on the prompt given.
+Your task is to generate a query that will produce a priority ranking of census tracts by GEOID based on the prompt given.
 Use only the tables and columns given in the metadata context.
 Do NOT output any reasoning, explanation, or analysis.
 Output only the final SQL query, with no comments and no semicolon.
@@ -425,6 +425,10 @@ def generate_sql_rag_embed():
         for para in ["canonical_prompt", "paraphrase_prompt"]:
             pid = item["item_id"] + ("_og" if para == "canonical_prompt" else "_pp")
             prompt = item[para]
+            
+            if prompt == "PLACEHOLDER":
+                continue
+            
             level = item["level"]
 
             print(f"\n[{pid}] Processing question:\n{prompt}")
