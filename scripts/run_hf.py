@@ -55,7 +55,7 @@ args = parser.parse_args()
 INPUT_JSON = "benchmark/benchmark.jsonl"
 OUTPUT_JSONL = args.output_jsonl
 
-DATA_DIR = "data"
+DATA_DIR = "data/data"
 METADATA_PATH = os.path.join(DATA_DIR, "metadata_parquet.json")
 
 MODEL_NAME = args.model
@@ -80,6 +80,7 @@ The result of the SQL query should contain three columns:
 3. `score_rank` contains the rank of each tract as an integer. Low ranks mean higher priority for resource distribution.
 
 Additionally, follow these rules in your response:
+- Only rank census tracts within the requested metropolitan area(s).
 - If `score` is null, `score_rank` should also be null.
 - Score ties should be broken by increasing GEOID.
 - Use only the tables and columns given in the metadata context.
@@ -462,7 +463,7 @@ def generate_sql_rag_embed():
                 continue
 
             print("\n[%s] Processing question %d of %d:\n%s" 
-                  % (pid, i, n_prompts, prompt))
+                  % (pid, i+1, n_prompts, prompt))
 
             # STEP 0: embed the question once
             q_emb = embedder.encode(args.query_prefix + prompt)[0]
@@ -480,7 +481,7 @@ def generate_sql_rag_embed():
             system_text = SYSTEM_PROMPT.strip() + "\n\n" + metadata_prompt
             user_prompt = f"""
 Question:
-{question}
+{prompt}
 
 Return only a single valid DuckDB SQL query.
 """
