@@ -912,16 +912,25 @@ GLOBAL_METADATA = {
 
                 # ===== Hospital and school joins =====
                 {"pair": ["hospitals.COUNTYFIPS", "county.GEOID"]},  
-                {"pair": ["hospitals.ZIP", "schools.ZIP"]},                       
+                {"pair": ["hospitals.ZIP", "schools.ZIP"]},    
+                
+                # ===== County joins =====
+                {"pair": ["county.GEOID", "six_metro.county_geoid"]}
             ],
 
             "concat": [
-                # ===== GEOID prefix (tract-to-county) joins =====
+                # ===== GEOID prefix (tract-to-county) joins ===== #
                 {"pair": ["LEFT(claims.GEOID,5)", "county.GEOID"]},
                 {"pair": ["LEFT(census_tracts.GEOID,5)", "county.GEOID"]},
                 {"pair": ["LEFT(nri.GEOID,5)", "county.GEOID"]},
                 {"pair": ["LEFT(svi.GEOID,5)", "county.GEOID"]},
-                {"pair": ["LEFT(cre.GEOID,5)", "county.GEOID"]}
+                {"pair": ["LEFT(cre.GEOID,5)", "county.GEOID"]},
+                
+                {"pair": ["LEFT(claims.GEOID,5)", "six_metro.county_geoid"]},
+                {"pair": ["LEFT(census_tracts.GEOID,5)", "six_metro.county_geoid"]},
+                {"pair": ["LEFT(nri.GEOID,5)", "six_metro.county_geoid"]},
+                {"pair": ["LEFT(svi.GEOID,5)", "six_metro.county_geoid"]},
+                {"pair": ["LEFT(cre.GEOID,5)", "six_metro.county_geoid"]}
             ]
         },
 
@@ -1199,7 +1208,7 @@ def get_description(table_name, col_name):
 def main():
     import os, json, duckdb
 
-    data_dir = "data"
+    data_dir = "data/data"
     output_file = os.path.join(data_dir, "metadata_parquet.json")
 
     con = duckdb.connect()
