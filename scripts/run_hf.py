@@ -478,10 +478,12 @@ def generate_sql_rag_embed():
 
             # Many chat templates only allow a single system message, so merge them
             system_text = SYSTEM_PROMPT.strip() + "\n\n" + metadata_prompt
-            user_prompt = f"""Question:
-                {prompt}
-            Return only a single valid DuckDB SQL query."""
+            user_prompt = f"""
+Question:
+{question}
 
+Return only a single valid DuckDB SQL query.
+"""
             # STEP 4: LLM
             try:
                 raw = generator.generate(system_text, user_prompt)

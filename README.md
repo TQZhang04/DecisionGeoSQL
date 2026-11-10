@@ -15,19 +15,16 @@ curl https://install.duckdb.org | bash
 uv sync
 source .venv/bin/activate
 ```
-3. Clone the FloodSQL submodule with:
+3. Download the FloodSQL data and generate a metadata file with:
 ```
-git submodule update --init
+python scripts/download_hf.py
+python scripts/meta_builder.py
 ```
-4. Download the FloodSQL data with:
-```
-python FloodSQL-Bench/download_hf.py
-```
-5. You should be set up to run the SQL script with duckdb. This will start an interactive session as well as populate `outputs` with the necessary files for benchmark creation.
+4. You should be set up to run the SQL script with duckdb. This will start an interactive session as well as populate `outputs` with the necessary files for benchmark creation.
 ```
 duckdb -init scripts/DGSQL.sql
 ```
-6. Once the SQL script has completed, you can run the benchmark generation script to save the benchmark into a .jsonl file in `benchmark`.
+5. Once the SQL script has completed, you can run the benchmark generation script to save the benchmark into a .jsonl file in `benchmark`.
 Update filepaths/constants in the script as needed.
 ```
 python scripts/create_benchmark.py
