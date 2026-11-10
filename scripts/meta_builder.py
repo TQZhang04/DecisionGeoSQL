@@ -860,7 +860,8 @@ FIELD_DESCRIPTIONS = {
             "Provides information on which counties lie within each metropolitan area. "
             "This dataset contains no geometry field; all joins are key-based via the 5-digit county_geoid. "
             "This can be linked to tract-level data, as the first 5 digits of an 11-digit census "
-            "tract GEOID match the county_geoid of the county it belongs to."
+            "tract GEOID match the county_geoid of the county it belongs to. "
+            "This table is necessary for any metropolitan-area-level analysis."
         ),
         # ------------------------------------------------------------
         # Keys and basic geographic identifiers
