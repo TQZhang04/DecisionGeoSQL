@@ -17,7 +17,7 @@ source .venv/bin/activate
 ```
 3. Download the FloodSQL data and generate a metadata file with:
 ```
-python scripts/download_hf.py
+python scripts/download_data.py
 python scripts/meta_builder.py
 ```
 4. You should be set up to run the SQL script with duckdb. This will start an interactive session as well as populate `outputs` with the necessary files for benchmark creation.

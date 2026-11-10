@@ -77,7 +77,7 @@ CREATE OR REPLACE TABLE schools AS
     SELECT * FROM read_parquet(getvariable('data_dir') || 'schools_tx_fl_la.parquet');
 
 CREATE OR REPLACE TABLE six_metro AS
-    SELECT * FROM read_csv('six_metro_counties.csv');
+    SELECT * FROM read_parquet(getvariable('data_dir') || 'six_metro.parquet');
 
 ALTER TABLE six_metro
     ALTER COLUMN county_geoid TYPE VARCHAR;
