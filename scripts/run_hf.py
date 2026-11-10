@@ -55,7 +55,7 @@ args = parser.parse_args()
 INPUT_JSON = "benchmark/benchmark.jsonl"
 OUTPUT_JSONL = args.output_jsonl
 
-DATA_DIR = "FloodSQL-Bench/data"
+DATA_DIR = "data"
 METADATA_PATH = os.path.join(DATA_DIR, "metadata_parquet.json")
 
 MODEL_NAME = args.model
@@ -293,6 +293,12 @@ def retrieve_tables(q_emb, table_names, table_embs, top_k):
     order = np.argsort(-sims)[:top_k]
     scores = [(table_names[i], float(sims[i])) for i in order]
     top_tables = [t for t, _ in scores]
+    
+    # Override: Always include the census_tracts table
+    if "census_tracts" not in top_tables:
+        print("⚠ `census_tracts` not in table list; adding manually")
+        top_tables.append("census_tracts")
+        scores.append(-1)
     return top_tables, scores
 
 
@@ -398,10 +404,10 @@ def build_metadata_prompt(meta, chosen_tables, chosen_columns):
 
 def generate_sql_rag_embed():
     
-    print("="*20)
-    print("===Running DecisionGeoSQL-Bench SQL generation script===")
+    print("="*40)
+    print("Running DecisionGeoSQL-Bench SQL generation script")
     print("Using device: %s" % DEVICE)
-    print("="*20)
+    print("="*40)
     print()
     
     print("Loading metadata...")
@@ -446,7 +452,7 @@ def generate_sql_rag_embed():
         n_prompts = len(benchmark_episodes)
         record = {
             "item_id": item["item_id"],
-            "level": level,
+            "level": item["level"],
         }
         for para in ["canonical_prompt", "paraphrase_prompt"]:
             pid = item["item_id"] + ("_og" if para == "canonical_prompt" else "_pp")
@@ -454,8 +460,6 @@ def generate_sql_rag_embed():
             
             if prompt == "PLACEHOLDER":
                 continue
-            
-            level = item["level"]
 
             print("\n[%s] Processing question %d of %d:\n%s" 
                   % (pid, i, n_prompts, prompt))

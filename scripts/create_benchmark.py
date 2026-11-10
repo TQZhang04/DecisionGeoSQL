@@ -1,6 +1,6 @@
-'''
+"""
 Creates a benchmark .json file from canonical SQL prompts and natural language prompts.
-'''
+"""
 
 from pathlib import Path
 import pandas as pd
