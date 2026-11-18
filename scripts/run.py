@@ -45,7 +45,7 @@ INPUT_JSON = "benchmark/benchmark.jsonl"
 
 OUTPUT_JSONL = args.output_jsonl
 
-DATA_DIR = "FloodSQL-Bench/data"
+DATA_DIR = "data/data"
 METADATA_PATH = os.path.join(DATA_DIR, "metadata_parquet.json")
 
 MODEL_NAME = args.model
@@ -56,11 +56,22 @@ TOP_COLS = 5 # top-k used for column RAG
 
 SYSTEM_PROMPT = """
 You are an expert DuckDB SQL generator for the FloodSQL_Bench dataset.
-Use only the tables and columns given in the metadata context.
-Do NOT output any reasoning, explanation, or analysis.
-Output only the final SQL query, with no comments and no semicolon.
-Your output must contain SQL code only. 
-Any natural language or reasoning is strictly forbidden.
+You are aiding a disaster responder who is trying to prioritize the distribution of limited resources to areas that need them most.
+Your task is to generate a query that will produce a priority ranking of census tracts by GEOID based on the specific disaster decision being made.
+The result of the SQL query should contain three columns:
+1. `GEOID` contains the id of each census tract, exactly as it is written in the data.
+2. `score` contains the single metric calculated from the data that is used for ranking.
+3. `score_rank` contains the rank of each tract as an integer. Low ranks mean higher priority for resource distribution.
+
+Additionally, follow these rules in your response:
+- Only rank census tracts within the requested metropolitan area(s).
+- If `score` is null, `score_rank` should also be null.
+- Score ties should be broken by increasing GEOID.
+- Use only the tables and columns given in the metadata context.
+- Do NOT output any reasoning, explanation, or analysis.
+- Output only the final SQL query, with no comments and no semicolon.
+- Your output must contain SQL code only.
+- Any natural language or reasoning is strictly forbidden.
 """
 
 # =========================================================
@@ -307,12 +318,13 @@ def generate_sql_rag_embed():
     benchmark_episodes=benchmark_episodes[:5]
     # 3) iterate over all prompts
     for item in benchmark_episodes:
+        n_prompts = len(benchmark_episodes)
+        record = {
+            "item_id": item["item_id"],
+            "level": item["level"],
+        }
         for para in ["canonical_prompt", "paraphrase_prompt"]:
-            if para == "canonical_prompt":
-                pid = item["item_id"] + "_og"
-            else:
-                pid = item["item_id"] + "_pp"
-            
+            pid = item["item_id"] + ("_og" if para == "canonical_prompt" else "_pp")
             prompt = item[para]
             
             level = item["level"]
@@ -354,11 +366,9 @@ def generate_sql_rag_embed():
                 print(f"[ERROR] GPT failed on {pid}: {e}")
                 sql = None
 
-            record = {
+            record[para] = {
                 "id": pid,
-                "item_id": item["item_id"],
                 "question": prompt,
-                "level": level,
                 "generated_sql": sql,
                 "chosen_tables": chosen_tables,
                 "chosen_columns": {
@@ -367,8 +377,8 @@ def generate_sql_rag_embed():
                 "table_scores": table_scores,
             }
 
-            fout.write(json.dumps(record, ensure_ascii=False) + "\n")
-            fout.flush()
+        fout.write(json.dumps(record, ensure_ascii=False) + "\n")
+        fout.flush()
 
     fout.close()
     print(f"\n[DONE] Saved SQL to {OUTPUT_JSONL}")

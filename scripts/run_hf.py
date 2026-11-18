@@ -491,7 +491,6 @@ Return only a single valid DuckDB SQL query.
                 sql = flatten_sql(clean_sql(raw))
             except Exception as e:
                 print(f"[ERROR] LLM failed on {pid}: {e}")
-                raise e
                 sql = None
 
             record[para] = {
