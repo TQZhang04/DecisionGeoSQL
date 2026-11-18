@@ -2,6 +2,7 @@ import os
 import re
 import json
 import argparse
+from datetime import datetime
 
 import numpy as np
 import torch
@@ -39,7 +40,7 @@ parser.add_argument(
     help="Optional instruction prefix prepended to questions only "
          "(e.g. 'Represent this sentence for searching relevant passages: ' for bge).",
 )
-parser.add_argument("--output_jsonl", type=str, default="results/Qwen3-8B.jsonl")
+parser.add_argument("--output_jsonl", type=str, default=None)
 parser.add_argument("--max_new_tokens", type=int, default=512)
 parser.add_argument("--embed_max_length", type=int, default=512)
 parser.add_argument("--embed_batch_size", type=int, default=32)
@@ -49,6 +50,9 @@ parser.add_argument("--limit", type=int, default=None, help="Only process the fi
 
 args = parser.parse_args()
 
+# Set default values
+if args.output_jsonl is None:
+    args.output_jsonl = f"results/{args.model.split('/')[-1]}.jsonl"
 # =========================================================
 # CONFIG
 # =========================================================
@@ -408,6 +412,8 @@ def generate_sql_rag_embed():
     print("="*40)
     print("Running DecisionGeoSQL-Bench SQL generation script")
     print("Using device: %s" % DEVICE)
+    start_time = datetime.now()
+    print("Start time: %s" % start_time)
     print("="*40)
     print()
     
@@ -509,6 +515,8 @@ Return only a single valid DuckDB SQL query.
 
     fout.close()
     print(f"\n[DONE] Saved SQL to {OUTPUT_JSONL}")
+    print("End time: %s" % datetime.now())
+    print("Total time: %s" % (datetime.now() - start_time))
 
 
 if __name__ == "__main__":
