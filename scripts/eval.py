@@ -1,4 +1,5 @@
 import duckdb
+from datetime import datetime
 import pandas as pd
 import numpy as np
 import json
@@ -31,12 +32,16 @@ parser.add_argument(
 )
 
 parser.add_argument("--output_csv", type=str, default=None)
+parser.add_argument("--verbose", "-v", action="store_true", help="Print and log debug info")
+parser.add_argument("--output_log", type=str, default=None, help="Path to log file")
 parser.add_argument("--limit", type=int, default=np.inf, help="Only process the first N benchmark items")
 args = parser.parse_args()
 
 # set defaults
 if not args.output_csv:
     args.output_csv = Path(args.input).parent / (Path(args.input).stem + "_eval.csv")
+if not args.output_log:
+    args.output_log = Path(args.input).parent / (Path(args.input).stem + "_eval.log")
 
 # =========================================================
 # CONFIG
@@ -51,6 +56,12 @@ OVERLAP_TOP_P = 20          # top-p percent of items used for overlap metric
 # =========================================================
 # HELPERS
 # =========================================================
+def log_msg(*msg, override=False):
+    if args.verbose or override:
+        print(*msg)
+    with open(args.output_log, "a") as f:
+        f.write(" ".join(str(m) for m in msg) + "\n")
+
 def cosine(a, b):
     denom = (np.linalg.norm(a) * np.linalg.norm(b) + 1e-10)
     return float(np.dot(a, b) / denom)
@@ -122,26 +133,42 @@ def run_sql(sql):
     return df
 
 def setup_db():
+    #== Install spatial library ==#
+    duckdb.execute("INSTALL spatial")
+    duckdb.execute("LOAD spatial")
+    
+    #== Load data ==#
     data_files = Path(args.data_dir).glob("*.parquet")
     for file in data_files:
         table_name = file.stem.lower().replace("_tx_fl_la", "")
-        data_table = duckdb.read_parquet(file).df()
-        duckdb.execute("CREATE OR REPLACE TABLE %s AS SELECT * FROM data_table" % table_name)
-    duckdb.execute("INSTALL spatial")
-    duckdb.execute("LOAD spatial")
-    print(duckdb.sql("SHOW TABLES"))
+        duckdb.execute("CREATE OR REPLACE TABLE %s AS SELECT * FROM read_parquet('%s')" % (table_name, file))
+    
+    #== Data Cleaning ==#
+    
+    log_msg(duckdb.sql("SHOW TABLES"))
 
 # =========================================================
 # MAIN EVALUATION PIPELINE
 # =========================================================
 
 def main():
+    # Set up logging
+    if args.verbose:
+        open(args.output_log, "w").close()  # clear log file
+    
+    log_msg("="*40, override=True)
+    log_msg("Running DecisionGeoSQL-Bench evaluation script", override=True)
+    start_time = datetime.now()
+    log_msg("Start time: %s" % start_time, override=True)
+    log_msg("="*40, override=True)
+    log_msg("", override=True)
+    
     # Set up database
-    print("Creating DuckDB database...")
+    log_msg("Creating DuckDB database...")
     setup_db()
     
     # load queries and benchmark
-    print("Loading queries & benchmark...")
+    log_msg("Loading queries & benchmark...")
     gen_episodes = []
     with open(INPUT_DIR, "r", encoding="utf-8") as f:
         for line in f:
@@ -177,7 +204,7 @@ def main():
             
             # Attempt to run SQL: if error, save error type
             try:
-                print("\n[%s] Running query %d of %d:\n%s" 
+                log_msg("\n[%s] Running query %d of %d:\n%s" 
                   % (item_id, i+1, n, query))
                 
                 sql_result = run_sql(query)
@@ -196,8 +223,9 @@ def main():
                     'top20pct_overlap' : top_pct_overlap(sql_result, gold, p=20),
                     'top40pct_overlap' : top_pct_overlap(sql_result, gold, p=40),
                 })
+                log_msg("success")
             except Exception as e:
-                print(type(e), e)
+                log_msg(type(e), e)
                 result.update({
                     'error' : type(e)
                 })
@@ -206,7 +234,9 @@ def main():
                 result
             )
     pd.DataFrame(results).to_csv(OUTPUT_DIR, index=False)
-    print("Evaluation complete. Results saved to %s" % OUTPUT_DIR)
+    log_msg("Evaluation complete. Results saved to %s" % OUTPUT_DIR, override=True)
+    log_msg("End time: %s" % datetime.now(), override=True)
+    log_msg("Total time: %s" % (datetime.now() - start_time), override=True)
     
 if __name__ == "__main__":
     main()
