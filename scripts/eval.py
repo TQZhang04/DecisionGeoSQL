@@ -30,9 +30,13 @@ parser.add_argument(
     help="Path to directory with FloodSQL-Bench data as parquet files",
 )
 
-parser.add_argument("--output_csv", type=str, default="results/Qwen3-8B_eval.csv")
+parser.add_argument("--output_csv", type=str, default=None)
 parser.add_argument("--limit", type=int, default=np.inf, help="Only process the first N benchmark items")
 args = parser.parse_args()
+
+# set defaults
+if not args.output_csv:
+    args.output_csv = Path(args.input).parent / (Path(args.input).stem + "_eval.csv")
 
 # =========================================================
 # CONFIG
@@ -202,6 +206,7 @@ def main():
                 result
             )
     pd.DataFrame(results).to_csv(OUTPUT_DIR, index=False)
+    print("Evaluation complete. Results saved to %s" % OUTPUT_DIR)
     
 if __name__ == "__main__":
     main()
